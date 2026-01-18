@@ -1,0 +1,25 @@
+name: B12 Apply
+
+on:
+  workflow_dispatch:
+
+jobs:
+  submit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Submit application to B12
+        env:
+          B12_NAME: ${{ secrets.B12_NAME }}
+          B12_EMAIL: ${{ secrets.B12_EMAIL }}
+          B12_RESUME_LINK: ${{ secrets.B12_RESUME_LINK }}
+          # Treat like a secret in implementation (even though it's public)
+          B12_SIGNING_SECRET: ${{ secrets.B12_SIGNING_SECRET }}
+        run: python b12_submit.py
